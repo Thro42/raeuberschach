@@ -1,0 +1,2 @@
+# raeuberschach
+Räuberschach in Python
