@@ -1,6 +1,7 @@
 import pygame
 import pygame.math
 import sys
+from BoardMap import BoardMap
 #from ColorFigures 
 import ColorFigures
 from Field import Field
@@ -16,7 +17,8 @@ class Board:
         self.hoehe = hoehe
         self.screen = game.screen
         self.bordImage = pygame.image.load("images/brett.png")
-        self.initBoard()
+        self.boardmap = BoardMap()
+        #self.initBoard()
 
     def drawBoard(self):
         winRect = pygame.Rect(0, 0, self.breite, self.hoehe)
@@ -32,7 +34,12 @@ class Board:
                 # self.fields[x][y] = Field(place,"","")
             self.fields.append(line)
 
-    def setPlayer(self,player: Player):
+    def setPlayer(self, player: Player):
+        for p in player.color.pieces:
+            color_short = p.color.short
+            self.boardmap.setFieldColor(p.place, color_short)
+
+    def set_Player(self,player: Player):
          for x in range(0,8):
             for y in range(1,9):
                 xpos = self.xposmap[x]
@@ -51,7 +58,11 @@ class Board:
             xnum +=1
         return place_x
 
-    def getColor4Field(self,place: str):
+    def getColor4Field(self, place: str):
+        #print(place)
+        return self.boardmap.getFieldColor(place)
+
+    def getColor_4Field(self,place: str):
         print("Place",place)
         colorName = ""
         place_x = 0
@@ -63,6 +74,10 @@ class Board:
         return colorName
 
     def movePiece(self, piece : Piece, toPlace ):
+        self.boardmap.clearFieldColor(piece.place)
+        self.boardmap.setFieldColor(toPlace, piece.color.short)
+
+    def move_Piece(self, piece : Piece, toPlace ):
         fromPlace = piece.place
         from_x = self.getXnum(fromPlace)
         from_y = int(fromPlace[1:2]) - 1
@@ -73,7 +88,9 @@ class Board:
 
 
     def printBord(self):
-        for y in range(0,8):
-            for x in range(0,8):
-                print("[",self.fields[x][y].colorName,"]", end='')
-            print("\n")
+        pass
+        # self.boardmap.printBord()
+        #for y in range(0,8):
+        #    for x in range(0,8):
+        #        print("[",self.fields[x][y].colorName,"]", end='')
+        #    print("\n")

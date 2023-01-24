@@ -16,8 +16,8 @@ class Player():
     def movePiece(self, piece: Piece, end: str ):
         #fromPlace = self.piece.place
         fieldColor = self.game.board.getColor4Field(end)
-        if fieldColor != "" and fieldColor != self.color_short:
-            self.game.hitPiecAt(end)
+        if fieldColor != "-" and fieldColor != self.color_short:
+            self.game.hitPiecAt(self, end)
         self.game.board.movePiece(piece, end)
         piece.setAlphaPos(end)
         piece.select(False)
@@ -46,6 +46,7 @@ class Player():
             if self.selectPiece != None:
                 if self.selectPiece.isPossibleField(place):
                     self.movePiece(self.selectPiece, place)
+                    self.game.whitePlay = False
                 #self.selectPiece.moveToPossibleFields(place)
 
     def draw(self):

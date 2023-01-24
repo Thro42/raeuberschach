@@ -13,13 +13,18 @@ class Piece:
         self.is_selcted = False
         self.pieceName = ""
         self.game = color.game
+        self.boardmap = color.game.board.boardmap
         self.place = place
         self.place_x = 0
         self.place_y = 0
         self.color = color
+        self.color_short = color.short
         self.image = image
         self.setAlphaPos(place)
         self.possibleFields = []
+
+    def setMap(self, map):
+        self.boardmap = map
 
     def setPos(self, place_x, place_y):
         self.place_x = place_x
@@ -41,7 +46,7 @@ class Piece:
         return place
 
     def select(self, select):
-        print(self.color.short, self.pieceName, self.place, select)
+        # print(self.color.short, self.pieceName, self.place, select)
         self.is_selcted = select
     
     def drawPossibleFields(self, field):
@@ -90,10 +95,11 @@ class Piece:
         no_end = True
         if pos_x >= 0 and pos_x < 8 and pos_y >= 0 and pos_y < 8:
             field = self.getPlace(pos_x,pos_y)
-            fieldColor = self.game.board.getColor4Field(field)
+            #fieldColor = self.game.board.getColor4Field(field)
+            fieldColor = self.boardmap.getFieldColor(field)
             if fieldColor != self.color.short:
                 self.possibleFields.append(field)
-            if fieldColor != "":
+            if fieldColor != "-":
                 no_end = False
         else:
             no_end = False

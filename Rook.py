@@ -27,7 +27,7 @@ class Rook(Piece.Piece):
             if y_start >= 0:
                 do_next = self.addPossibleFieldAtPlace(self.place_x,y_start)
             else:
-                y_end = False
+                do_next = False
         do_next = True
         x_start = self.place_x
         while do_next:

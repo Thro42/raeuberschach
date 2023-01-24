@@ -4,6 +4,7 @@ import pygame.math
 from Board import Board
 from Color import Color
 from ColorFigures import ColorFigures
+from Computer import Computer
 from Player import Player
 
 class Game():
@@ -11,8 +12,6 @@ class Game():
     colorBlack = None
     player = None
     computer = None
-    # images_White = ColorFigures("w")
-    # images_Black = ColorFigures("b")
     
     def __init__(self):
         self.game_over = False
@@ -29,22 +28,24 @@ class Game():
         self.player = self.whitePlayer
         self.computer = self.blackPlayer
         self.whitePlay = True
+        self.TheComputer = Computer(self, self.blackPlayer, self.whitePlayer)
         
     def loadImages(self, color: ColorFigures):
         path = "images/"+ color.short
 
-    def hitPiecAt(self, pos):
-        self.blackPlayer.hitPieceAtPlace(pos)
-        #xpos = int(pos[0]/100)
-        #ypos = 8 - int(pos[1]/100)
+    def hitPiecAt(self, player: Player, pos):
+        if player == self.whitePlayer:
+            self.blackPlayer.hitPieceAtPlace(pos)
+        else:
+            self.whitePlayer.hitPieceAtPlace(pos)
 
     def selectPieceAt(self, pos):
-        print(pos)
+        # print(pos)
         xpos = int(pos[0]/100)
         ypos = 8 - int(pos[1]/100)
         if self.whitePlay:
+            #self.board.boardmap.printBord()            
             self.whitePlayer.selectPieceAtXY(xpos,ypos)
-        # self.blackPlayer.selectPieceAtXY(xpos,ypos)
 
     def HandleKeybord(self):
         # Tastatur befele verarbeiten
@@ -58,8 +59,6 @@ class Game():
                     self.selectPieceAt(pos)
             elif event.type == pygame.MOUSEBUTTONUP:
                 self.mouseDown = False
-                # pos = pygame.mouse.get_pos()
-                #self.selectPieceAt(pos, False)
 
 
     def  loop(self):
@@ -68,5 +67,7 @@ class Game():
             self.board.drawBoard()
             self.whitePlayer.loop()
             self.blackPlayer.loop()
+            pygame.display.update()
+            self.TheComputer.loop()
             pygame.display.update()
             self.clock.tick(60)
